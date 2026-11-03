@@ -1,0 +1,565 @@
+/*
+ * Joly World interface: warm wooden boards with cream text over the bright meadow, laid out
+ * like the 2021 prototype's HUD. Exo 2 Black is the display face, Exo 2 SemiBold the text face.
+ * Laid out at 1280x720 reference pixels; the panel settings scale it to the screen. Hud.cs
+ * builds the elements and gives them these classes.
+ */
+
+:root {
+    --wood: rgba(122, 86, 52, 0.92);
+    --wood-dark: rgba(84, 56, 32, 0.95);
+    --wood-edge: #d8a868;
+    --cream: #fff4dc;
+    --muted: #e8d2a8;
+    --gold: #ffd23a;
+    --good: #8ef06a;
+    --health: #ef3b3b;
+    --mana: #4a7cff;
+    --stamina: #ffd84a;
+    --purple: #6a3a8a;
+
+    color: var(--cream);
+    font-size: 18px;
+    -unity-font-definition: url("ExoSemiBold.asset");
+}
+
+.display {
+    -unity-font-definition: url("ExoBlack.asset");
+}
+
+.layer {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+}
+
+.hidden {
+    display: none;
+}
+
+.shadow {
+    text-shadow: 0 2px 0 rgba(40, 24, 10, 0.75);
+}
+
+.board {
+    background-color: var(--wood);
+    border-width: 3px;
+    border-color: var(--wood-edge);
+    border-radius: 10px;
+}
+
+/* ---- Coins, gems, timer ---- */
+
+.purse {
+    position: absolute;
+    left: 16px;
+    top: 14px;
+    padding: 6px 14px 6px 8px;
+    background-color: rgba(84, 56, 32, 0.6);
+    border-radius: 12px;
+}
+
+.purse-row {
+    flex-direction: row;
+    align-items: center;
+}
+
+.purse-icon {
+    width: 44px;
+    height: 44px;
+    -unity-background-scale-mode: scale-to-fit;
+}
+
+.purse-value {
+    font-size: 30px;
+    margin-left: 10px;
+    color: var(--cream);
+}
+
+.gem-row {
+    flex-direction: row;
+    margin-top: 4px;
+    margin-left: 4px;
+}
+
+.gem-icon {
+    width: 26px;
+    height: 26px;
+    margin-right: 4px;
+    -unity-background-scale-mode: scale-to-fit;
+    opacity: 0.75;
+}
+
+.gem-icon--found {
+    opacity: 1;
+}
+
+.top-center {
+    position: absolute;
+    top: 14px;
+    left: 540px;
+    right: 540px;
+    align-items: center;
+    padding: 4px 0 6px 0;
+    background-color: rgba(84, 56, 32, 0.6);
+    border-radius: 12px;
+}
+
+.level-name {
+    font-size: 15px;
+    letter-spacing: 4px;
+    color: var(--cream);
+}
+
+.timer {
+    font-size: 26px;
+    color: var(--cream);
+}
+
+.menu-open .top-center {
+    display: none;
+}
+
+.round-button {
+    position: absolute;
+    right: 22px;
+    top: 16px;
+    width: 56px;
+    height: 56px;
+    border-radius: 28px;
+    background-color: var(--wood);
+    border-width: 3px;
+    border-color: var(--wood-edge);
+    align-items: center;
+    justify-content: center;
+}
+
+.round-button:hover {
+    background-color: var(--wood-dark);
+    scale: 1.06 1.06;
+}
+
+.round-button__icon {
+    width: 30px;
+    height: 30px;
+    -unity-background-scale-mode: scale-to-fit;
+}
+
+/* ---- Health, mana, stamina ---- */
+
+.vitals {
+    position: absolute;
+    left: 16px;
+    bottom: 16px;
+    width: 232px;
+    padding: 8px 12px 6px 12px;
+}
+
+.vital {
+    margin-bottom: 4px;
+}
+
+.vital__label {
+    font-size: 13px;
+    letter-spacing: 2px;
+    color: var(--cream);
+    -unity-font-definition: url("ExoBlack.asset");
+}
+
+.vital__bar {
+    height: 9px;
+    border-radius: 4px;
+    background-color: rgba(30, 18, 8, 0.75);
+    overflow: hidden;
+    border-width: 1px;
+    border-color: rgba(30, 18, 8, 0.9);
+}
+
+.vital__bar--flash {
+    border-color: #ffffff;
+    background-color: rgba(120, 140, 255, 0.6);
+}
+
+.vital__fill {
+    height: 100%;
+    width: 100%;
+    border-radius: 4px;
+}
+
+.vital__fill--health {
+    background-color: var(--health);
+}
+
+.vital__fill--low {
+    background-color: #ff7a3a;
+}
+
+.vital__fill--mana {
+    background-color: var(--mana);
+}
+
+.vital__fill--stamina {
+    background-color: var(--stamina);
+}
+
+.vitals-tag {
+    margin-top: 4px;
+    font-size: 14px;
+    letter-spacing: 2px;
+    color: #f0c0ff;
+    -unity-font-definition: url("ExoBlack.asset");
+    -unity-text-align: middle-center;
+    text-shadow: 0 1px 0 var(--purple);
+}
+
+/* ---- Hotbar and inventory slots ---- */
+
+.hotbar {
+    position: absolute;
+    bottom: 14px;
+    left: 262px;
+    right: 182px;
+    flex-direction: row;
+    justify-content: center;
+    padding: 6px;
+    background-color: rgba(84, 56, 32, 0.55);
+    border-radius: 10px;
+}
+
+.slot {
+    width: 92px;
+    height: 92px;
+    margin: 0 4px;
+    background-color: var(--wood);
+    border-width: 3px;
+    border-color: var(--wood-edge);
+    border-radius: 10px;
+    align-items: center;
+    justify-content: center;
+}
+
+.slot:hover {
+    border-color: #fff4dc;
+}
+
+.slot--empty {
+    background-color: rgba(122, 86, 52, 0.7);
+}
+
+.slot--selected {
+    border-color: var(--gold);
+    border-width: 5px;
+    background-color: rgba(150, 108, 60, 0.95);
+}
+
+.slot--held {
+    background-color: rgba(255, 210, 58, 0.45);
+}
+
+.slot__icon {
+    width: 70px;
+    height: 70px;
+    -unity-background-scale-mode: scale-to-fit;
+}
+
+.slot__count {
+    position: absolute;
+    right: 6px;
+    bottom: 2px;
+    font-size: 20px;
+    -unity-font-definition: url("ExoBlack.asset");
+}
+
+.slot__number {
+    position: absolute;
+    left: 6px;
+    top: 2px;
+    font-size: 13px;
+    color: var(--muted);
+}
+
+.board-button {
+    position: absolute;
+    right: 16px;
+    bottom: 34px;
+    width: 152px;
+    height: 54px;
+    background-color: #d8a040;
+    border-width: 3px;
+    border-color: #ffe2a0;
+    border-radius: 8px;
+    align-items: center;
+    justify-content: center;
+}
+
+.board-button:hover {
+    background-color: #e8b050;
+    scale: 1.04 1.04;
+}
+
+.board-button__label {
+    font-size: 17px;
+    letter-spacing: 2px;
+    color: #5a3a14;
+    -unity-font-definition: url("ExoBlack.asset");
+}
+
+/* ---- Banners and notices ---- */
+
+.banner {
+    position: absolute;
+    top: 170px;
+    left: 0;
+    right: 0;
+    font-size: 64px;
+    -unity-text-align: middle-center;
+    transition-property: scale;
+    transition-duration: 0.12s;
+}
+
+.banner--pop {
+    scale: 1.2 1.2;
+}
+
+.banner-sub {
+    position: absolute;
+    top: 250px;
+    left: 0;
+    right: 0;
+    font-size: 20px;
+    -unity-text-align: middle-center;
+}
+
+.notice {
+    position: absolute;
+    bottom: 132px;
+    left: 0;
+    right: 0;
+    font-size: 20px;
+    -unity-text-align: middle-center;
+    color: var(--cream);
+}
+
+/* ---- Inventory ---- */
+
+.inventory-panel {
+    position: absolute;
+    left: 290px;
+    right: 290px;
+    top: 70px;
+    padding: 12px 20px 14px 20px;
+    align-items: center;
+}
+
+.inventory-row-label {
+    align-self: flex-start;
+    margin-left: 6px;
+    font-size: 13px;
+    letter-spacing: 3px;
+    color: var(--muted);
+    height: 18px;
+}
+
+.inventory-row {
+    flex-direction: row;
+    margin-bottom: 6px;
+}
+
+.inventory-row .slot {
+    width: 84px;
+    height: 84px;
+}
+
+.inventory-row .slot__icon {
+    width: 62px;
+    height: 62px;
+}
+
+.inventory-info {
+    width: 100%;
+    margin-top: 8px;
+    padding: 8px 12px;
+    background-color: var(--wood-dark);
+    border-radius: 8px;
+}
+
+.inventory-name {
+    font-size: 19px;
+    color: var(--gold);
+    -unity-font-definition: url("ExoBlack.asset");
+}
+
+.inventory-text {
+    font-size: 16px;
+    white-space: normal;
+}
+
+/* ---- Menus ---- */
+
+.menu-dim {
+    background-color: rgba(20, 40, 70, 0.45);
+}
+
+.menu-dim--light {
+    background-color: rgba(20, 40, 70, 0.3);
+}
+
+.menu-panel {
+    position: absolute;
+    left: 340px;
+    right: 340px;
+    top: 40px;
+    bottom: 40px;
+    align-items: center;
+}
+
+.logo {
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.logo__letters {
+    flex-direction: row;
+}
+
+.logo__letter {
+    font-size: 88px;
+    height: 100px;
+    margin: 0 1px;
+    text-shadow: 0 6px 0 rgba(70, 40, 110, 0.85);
+}
+
+.logo__tag {
+    font-size: 15px;
+    letter-spacing: 5px;
+    color: var(--cream);
+    text-shadow: 0 2px 0 rgba(40, 24, 10, 0.75);
+}
+
+.menu-title {
+    font-size: 46px;
+    height: 56px;
+    -unity-text-align: middle-center;
+    text-shadow: 0 4px 0 rgba(70, 40, 110, 0.8);
+}
+
+.menu-title--good {
+    color: var(--good);
+}
+
+.menu-subtitle {
+    font-size: 18px;
+    color: var(--cream);
+    -unity-text-align: middle-center;
+    margin-bottom: 10px;
+    white-space: normal;
+    text-shadow: 0 2px 0 rgba(40, 24, 10, 0.75);
+}
+
+.menu-body {
+    width: 100%;
+    margin-bottom: 12px;
+    padding: 8px 4px;
+    background-color: var(--wood);
+    border-width: 3px;
+    border-color: var(--wood-edge);
+    border-radius: 10px;
+}
+
+.body-row {
+    flex-direction: row;
+    justify-content: space-between;
+    height: 28px;
+    padding: 0 14px;
+}
+
+.body-row__label {
+    color: var(--muted);
+    font-size: 17px;
+}
+
+.body-row__value {
+    font-size: 17px;
+}
+
+.body-row--highlight .body-row__value {
+    color: var(--gold);
+}
+
+.menu-items {
+    width: 440px;
+}
+
+.menu-item {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    height: 42px;
+    margin-bottom: 5px;
+    padding: 0 18px;
+    border-radius: 10px;
+    background-color: var(--wood);
+    border-width: 3px;
+    border-color: rgba(216, 168, 104, 0.55);
+}
+
+.menu-item--selected {
+    background-color: #d8a040;
+    border-color: #ffe2a0;
+    scale: 1.04 1.04;
+}
+
+.menu-item--selected .menu-item__label {
+    color: #4a2a0a;
+}
+
+.menu-item--selected .menu-item__value {
+    color: #4a2a0a;
+}
+
+.menu-item--disabled {
+    opacity: 0.55;
+}
+
+.menu-item__label {
+    font-size: 20px;
+    -unity-font-definition: url("ExoBlack.asset");
+}
+
+.menu-item__value {
+    font-size: 16px;
+    color: var(--gold);
+}
+
+.menu-hint {
+    position: absolute;
+    bottom: 14px;
+    left: 0;
+    right: 0;
+    -unity-text-align: middle-center;
+    font-size: 14px;
+    color: var(--cream);
+    text-shadow: 0 1px 0 rgba(40, 24, 10, 0.8);
+}
+
+.menu-hint--raised {
+    bottom: 132px;
+}
+
+.menu-hint--inline {
+    position: relative;
+    bottom: 0;
+    margin-top: 10px;
+}
+
+.credit {
+    position: absolute;
+    bottom: 36px;
+    left: 0;
+    right: 0;
+    -unity-text-align: middle-center;
+    font-size: 12px;
+    color: rgba(255, 244, 220, 0.85);
+}
