@@ -354,6 +354,23 @@ namespace JolyWorld.Core.Tests
         }
 
         [Test]
+        public void DrinkingFromABagSlotWorksWithoutTime()
+        {
+            var run = new LevelRun(Flat());
+            run.Inventory.Swap(1, 12);
+            run.Vitals.Stamina.Spend(80f);
+            var drank = new List<ItemKind>();
+            run.Drank += drank.Add;
+
+            Assert.That(run.Drink(12), Is.EqualTo(UseResult.Used));
+            Assert.That(run.Drink(12), Is.EqualTo(UseResult.EmptySlot));
+
+            Assert.That(drank, Is.EqualTo(new[] { ItemKind.StaminaPotion }));
+            Assert.That(run.Vitals.Stamina.IsFull, Is.True);
+            Assert.That(run.Seconds, Is.EqualTo(0f));
+        }
+
+        [Test]
         public void ReachingTheGoalFinishesTheLevelOnce()
         {
             var run = new LevelRun(Flat());

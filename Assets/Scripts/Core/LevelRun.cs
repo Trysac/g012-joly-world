@@ -159,16 +159,7 @@ namespace JolyWorld.Core
 
             if (input.Use >= 0)
             {
-                ItemKind kind = Inventory[input.Use].Kind;
-                UseResult used = Inventory.Use(input.Use, Vitals);
-                if (used == UseResult.Used)
-                {
-                    Drank?.Invoke(kind);
-                }
-                else
-                {
-                    UseFailed?.Invoke(used);
-                }
+                Drink(input.Use);
             }
 
             var motorInput = new MotorInput
@@ -216,6 +207,22 @@ namespace JolyWorld.Core
                 Finished = true;
                 Completed?.Invoke();
             }
+        }
+
+        /// <summary>Drinks from an inventory slot (the hotbar, or the inventory screen while the game waits).</summary>
+        public UseResult Drink(int slot)
+        {
+            ItemKind kind = Inventory[slot].Kind;
+            UseResult used = Inventory.Use(slot, Vitals);
+            if (used == UseResult.Used)
+            {
+                Drank?.Invoke(kind);
+            }
+            else
+            {
+                UseFailed?.Invoke(used);
+            }
+            return used;
         }
 
         void TryCast()
