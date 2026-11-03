@@ -1,0 +1,51 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dbfe5724d0aa5914182e46f98af4cb56, type: 3}
+  m_Name: GameArt
+  m_EditorClassIdentifier: JolyWorld.Game::JolyWorld.Game.GameArt
+  LowPoly: {fileID: 2100000, guid: 34337817d6e46b24a9892b21bc800d84, type: 2}
+  Glowing: {fileID: 2100000, guid: 6c961ef1899bfcc4d8929a62ac50c0b0, type: 2}
+  Water: {fileID: 2100000, guid: 9147c538c636218449b96d76b28956ce, type: 2}
+  Sky: {fileID: 2100000, guid: ec1bcc0e4a914da4a8d25228f37a4414, type: 2}
+  CoinIcon: {fileID: 2800000, guid: 13045e25c65e11446b03f5d41ccf8751, type: 3}
+  GemIcon: {fileID: 2800000, guid: 4247969fd9e647843893002739b45c6b, type: 3}
+  GemEmptyIcon: {fileID: 2800000, guid: 13ebc16e59160274ab753bf5acaa466b, type: 3}
+  HealthPotionIcon: {fileID: 2800000, guid: ff1e0e3088b4808478adeb6937784640, type: 3}
+  ManaPotionIcon: {fileID: 2800000, guid: 5338f2166ed037847870364e19a1d6ad, type: 3}
+  StaminaPotionIcon: {fileID: 2800000, guid: 711cca05cd1489b4aa939e1a9cf6bea1, type: 3}
+  ElixirIcon: {fileID: 2800000, guid: 9a83c4bd94640244f9066d2f0cfeaa8c, type: 3}
+  KeyIcon: {fileID: 2800000, guid: 5c702d8ae6386884f9e6d98686e2e0f3, type: 3}
+  MenuIcon: {fileID: 2800000, guid: 18fb25609e087fa408ed9b9d7b49b20c, type: 3}
+  Coin: {fileID: 8300000, guid: 2abeeb8872044954c8ffd3ad3bf3eeb4, type: 3}
+  Gem: {fileID: 8300000, guid: e2e420c79fe01a040bb55a066d76c690, type: 3}
+  Item: {fileID: 8300000, guid: dc7cba0e74b7dd949a3727aa64cf89e9, type: 3}
+  Jump: {fileID: 8300000, guid: 095a9d395ddc9f845a346e3b6ba31ceb, type: 3}
+  Land: {fileID: 8300000, guid: abf1ea9f6232b394e978ad490b63aed2, type: 3}
+  Dash: {fileID: 8300000, guid: 5e85fb09d6d7a874ca757ee4531c9d45, type: 3}
+  Bolt: {fileID: 8300000, guid: 2bc4fa6fe33ffcc44992df4974ae1506, type: 3}
+  Fizzle: {fileID: 8300000, guid: 11127820adf22334a9b0e31694d06881, type: 3}
+  Pop: {fileID: 8300000, guid: 38c534d7c46d588459f6c5b2a3b9db67, type: 3}
+  Stomp: {fileID: 8300000, guid: f83c23f5722e2cf49ad9cce9d16aed23, type: 3}
+  Hurt: {fileID: 8300000, guid: 183d2d84a75733e42bcc17e574ace8db, type: 3}
+  Splash: {fileID: 8300000, guid: cc06cbe80bdcda84c89a81b1b8230458, type: 3}
+  Drink: {fileID: 8300000, guid: 99dcd32f9b1757440b48b075995a5d6b, type: 3}
+  Gate: {fileID: 8300000, guid: b91c72f785e849647ad1dbb1b476984d, type: 3}
+  Locked: {fileID: 8300000, guid: 9ea000b99c42f8b43b949867f8321731, type: 3}
+  Checkpoint: {fileID: 8300000, guid: af9e7ec254ea6404c9b6322048bfd0da, type: 3}
+  Goal: {fileID: 8300000, guid: 77bfed7a86533ad42a2bf7ecca7bfe4b, type: 3}
+  KnockOut: {fileID: 8300000, guid: b1abb58068b368347aa474768a44eee0, type: 3}
+  Move: {fileID: 8300000, guid: bfa581f7e1bbaf24693b17ad20fbeace, type: 3}
+  Select: {fileID: 8300000, guid: f41d14ff7f190fc4d836beb781e51b69, type: 3}
+  Pause: {fileID: 8300000, guid: 1f3ce89579b5e31408641645908ac953, type: 3}
+  TitleMusic: {fileID: 8300000, guid: ffe56331f92050341ae588aaea0cb148, type: 3}
+  MeadowMusic: {fileID: 8300000, guid: f5660e947c732c6459f13246371270ab, type: 3}
+  PeaksMusic: {fileID: 8300000, guid: 18f73b302b171b2418dc7832db9beb65, type: 3}
