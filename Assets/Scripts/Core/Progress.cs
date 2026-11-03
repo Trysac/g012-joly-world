@@ -56,16 +56,19 @@ namespace JolyWorld.Core
 
         bool Valid(int level) => level >= 0 && level < LevelCount;
 
+        /// <summary>A stored record, where a negative (corrupt) value counts as no record.</summary>
+        int Record(int level, string field) => Math.Max(0, store.GetInt(Key(level, field), 0));
+
         public bool Completed(int level) => Valid(level) && store.GetInt(Key(level, "cleared"), 0) == 1;
 
         public bool Unlocked(int level) => Valid(level) && (level == 0 || Completed(level - 1));
 
-        public int BestCoins(int level) => Valid(level) ? store.GetInt(Key(level, "coins"), 0) : 0;
+        public int BestCoins(int level) => Valid(level) ? Record(level, "coins") : 0;
 
         /// <summary>The fastest clear in seconds, or 0 when the level was never cleared.</summary>
-        public float BestSeconds(int level) => Valid(level) ? store.GetInt(Key(level, "millis"), 0) / 1000f : 0f;
+        public float BestSeconds(int level) => Valid(level) ? Record(level, "millis") / 1000f : 0f;
 
-        public int GemMask(int level) => Valid(level) ? store.GetInt(Key(level, "gems"), 0) : 0;
+        public int GemMask(int level) => Valid(level) ? Record(level, "gems") : 0;
 
         public int GemsFound(int level) => Bits(GemMask(level));
 
@@ -101,7 +104,7 @@ namespace JolyWorld.Core
             }
 
             int millis = Math.Max(1, (int)Math.Round(result.Seconds * 1000f));
-            int best = store.GetInt(Key(level, "millis"), 0);
+            int best = Record(level, "millis");
             if (best == 0 || millis < best)
             {
                 update.NewBestTime = true;

@@ -110,6 +110,28 @@ namespace JolyWorld.Core.Tests
         }
 
         [Test]
+        public void NegativeStoredRecordsReadAsNoRecordAndCanBeBeaten()
+        {
+            var store = new MemoryStore();
+            store.SetInt("joly.v1.level0.millis", -500);
+            store.SetInt("joly.v1.level0.gems", -1);
+            store.SetInt("joly.v1.level0.coins", -7);
+            var progress = new Progress(store, 4);
+
+            Assert.That(progress.BestSeconds(0), Is.EqualTo(0f));
+            Assert.That(progress.GemMask(0), Is.EqualTo(0));
+            Assert.That(progress.GemsFound(0), Is.EqualTo(0));
+            Assert.That(progress.BestCoins(0), Is.EqualTo(0));
+
+            var update = progress.Submit(Result(0, 3, 30f, 0b001));
+
+            Assert.That(update.NewBestTime, Is.True);
+            Assert.That(progress.BestSeconds(0), Is.EqualTo(30f).Within(0.001f));
+            Assert.That(progress.GemsFound(0), Is.EqualTo(1));
+            Assert.That(progress.BestCoins(0), Is.EqualTo(3));
+        }
+
+        [Test]
         public void AResultForAnUnknownLevelIsIgnored()
         {
             var store = new MemoryStore();
