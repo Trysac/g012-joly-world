@@ -5,6 +5,8 @@ dashes through four little lands, from a sunny meadow by the river to the snowy 
 collecting coins and hidden gems, drinking potions from a 7-slot hotbar and popping spiky
 critters with a magic spark. It plays with a keyboard, a gamepad or the mouse in the menus.
 
+![Gameplay](docs/media/gameplay.gif)
+
 It is a rebuild of a prototype I made in 2021 whose project files were lost (see
 [Where it came from](#where-it-came-from)).
 
