@@ -13,6 +13,9 @@ namespace JolyWorld.Game
     /// (which have no command line) are unaffected. The same hook runs inside the editor
     /// (ProjectBuilder.CaptureScreenshots), which renders the camera and the HUD off screen and
     /// blends them, for machines that cannot run the player.
+    /// Adding <c>-frames N [-fps F]</c> records N frames per scenario at a fixed timestep instead of
+    /// one shot, into <c>&lt;folder&gt;/&lt;scenario&gt;/frame_0000.png...</c>; the <c>gameplay</c>
+    /// scenario runs, jumps and casts through the meadow while it records (for the README GIF).
     /// </summary>
     public sealed class ScreenshotScenarios : MonoBehaviour
     {
@@ -22,6 +25,8 @@ namespace JolyWorld.Game
 
         string folder;
         string[] scenarios;
+        int frames;
+        int fps = 15;
         RenderTexture sceneTarget;
         RenderTexture uiTarget;
         GameDirector director;
@@ -37,6 +42,8 @@ namespace JolyWorld.Game
             var host = new GameObject(nameof(ScreenshotScenarios)).AddComponent<ScreenshotScenarios>();
             host.folder = target;
             host.scenarios = (Argument("-scenario") ?? DefaultScenarios).Split(',');
+            host.frames = int.TryParse(Argument("-frames"), out int frames) ? frames : 0;
+            host.fps = int.TryParse(Argument("-fps"), out int fps) && fps > 0 ? fps : 15;
         }
 
         IEnumerator Start()
@@ -55,6 +62,11 @@ namespace JolyWorld.Game
                 string scenario = raw.Trim();
                 director.ScriptedInput = false;
                 yield return Stage(scenario);
+                if (frames > 0)
+                {
+                    yield return Record(scenario);
+                    continue;
+                }
                 Texture2D shot;
                 if (Application.isEditor)
                 {
@@ -141,6 +153,10 @@ namespace JolyWorld.Game
                     director.PickOrPlace();
                     yield return new WaitForSecondsRealtime(0.4f);
                     break;
+                case "gameplay":
+                    yield return Level(0, 6f);
+                    StartCoroutine(RunMeadow());
+                    break;
                 case "pause":
                     yield return Level(1, 44f);
                     yield return Walk(1f, 0.6f);
@@ -180,6 +196,84 @@ namespace JolyWorld.Game
                     Debug.LogWarning($"Unknown screenshot scenario '{scenario}'.");
                     break;
             }
+        }
+
+        /// <summary>Writes the given number of frames at a fixed timestep (Time.captureFramerate).</summary>
+        IEnumerator Record(string scenario)
+        {
+            string target = Path.Combine(folder, scenario);
+            Directory.CreateDirectory(target);
+            Time.captureFramerate = fps;
+            for (int i = 0; i < frames; i++)
+            {
+                Texture2D shot;
+                if (Application.isEditor)
+                {
+                    yield return null;
+                    shot = CaptureOffscreen();
+                }
+                else
+                {
+                    yield return new WaitForEndOfFrame();
+                    shot = ScreenCapture.CaptureScreenshotAsTexture();
+                }
+                File.WriteAllBytes(Path.Combine(target, $"frame_{i:0000}.png"), shot.EncodeToPNG());
+                Destroy(shot);
+            }
+            Time.captureFramerate = 0;
+            Debug.Log($"Saved {frames} frames of {scenario}");
+        }
+
+        /// <summary>
+        /// Plays the Sunny Meadow for the recording: runs right, jumps at the step, the gap and the
+        /// two ledges, and casts a spark at any critter just ahead.
+        /// </summary>
+        IEnumerator RunMeadow()
+        {
+            float[] jumpAt = { 24.4f, 33.4f, 42.6f, 48.4f };
+            float stuckWait = 0.5f;
+            int next = 0;
+            float castWait = 0f;
+            while (director.Run != null && !director.Run.Finished && director.ScriptedInput)
+            {
+                Vec2 hero = director.Run.Hero.Position;
+                HeroInput input = director.Scripted;
+                input.Move = 1f;
+                input.JumpHeld = true;
+                stuckWait -= Time.deltaTime;
+                if (next < jumpAt.Length && hero.X >= jumpAt[next])
+                {
+                    input.Jump = true;
+                    next++;
+                }
+                else if (stuckWait <= 0f && director.Run.Hero.Velocity.X < 0.5f)
+                {
+                    // Blocked by a step: hop onto it.
+                    input.Jump = true;
+                    stuckWait = 0.5f;
+                }
+                castWait -= Time.deltaTime;
+                if (castWait <= 0f && CritterAhead(hero))
+                {
+                    input.Cast = true;
+                    castWait = 0.7f;
+                }
+                director.Scripted = input;
+                yield return null;
+            }
+        }
+
+        bool CritterAhead(Vec2 hero)
+        {
+            foreach (Critter critter in director.Run.Critters)
+            {
+                float ahead = critter.Position.X - hero.X;
+                if (critter.Alive && ahead > 0f && ahead < 7f && Mathf.Abs(critter.Position.Y - hero.Y) < 1.8f)
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         IEnumerator Level(int index, float x, float y = float.NaN)
