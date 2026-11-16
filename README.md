@@ -22,12 +22,12 @@ It is a rebuild of a prototype I made in 2021 whose project files were lost (see
 
 ## Play it
 
-- **In your browser:** [trysac.github.io/Joly-World](https://trysac.github.io/Joly-World/)
+- **In your browser:** [trysac.github.io/g012-joly-world](https://trysac.github.io/g012-joly-world/)
 - **On itch.io:** [trysac.itch.io/joly-world](https://trysac.itch.io/joly-world)
 - **Get the code:** fork this repository, or clone it:
 
   ```bash
-  git clone https://github.com/Trysac/Joly-World.git
+  git clone https://github.com/Trysac/g012-joly-world.git
   ```
 
 ## Run it
